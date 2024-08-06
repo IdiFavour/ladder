@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Mail, mails } from "@/pages/data/data";
+import { Mail, mails } from "@/data/data";
 import LadderCard from "@/components/native/ListCard";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,7 +15,6 @@ interface MailListProps {
 }
 
 export default function Home({ items }: MailListProps) {
-  console.log(mails);
   const [currentStep, setCurrentStep] = useState(1);
   const [plays, setPlays] = useState("");
   const [odds, setOdds] = useState("");
