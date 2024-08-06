@@ -3,16 +3,19 @@ import { Badge } from "@/components/ui/badge";
 
 interface Mail {
   id: string;
-  name: string;
-  email: string;
-  subject: string;
-  text: string;
+  plays: string;
+  odds: string;
+  entryAmount: string;
   date: string;
   read: boolean;
-  labels: string[];
 }
 
-export default function LadderCard({ item }: { item: Mail }) {
+interface LadderCardProps {
+  item: Mail;
+  onSelect: (mail: Mail) => void;
+}
+
+export default function LadderCard({ item, onSelect }: LadderCardProps) {
   return (
     <button
       key={item.id}
@@ -26,12 +29,12 @@ export default function LadderCard({ item }: { item: Mail }) {
       //     selected: item.id,
       //   })
       // }
-      onClick={() => console.log(item.id)}
+      onClick={() => onSelect(item)}
     >
       <div className="flex w-full flex-col gap-1">
         <div className="flex items-center">
           <div className="flex items-center gap-2">
-            <div className="font-semibold">{item.name}</div>
+            <div className="font-semibold">{item.plays} Plays</div>
             {!item.read && (
               <span className="flex h-2 w-2 rounded-full bg-blue-600" />
             )}
@@ -45,10 +48,10 @@ export default function LadderCard({ item }: { item: Mail }) {
             )}
           ></div>
         </div>
-        <div className="text-xs font-medium">{item.subject}</div>
+        <div className="text-xs font-medium">{item.odds} odds</div>
       </div>
       <div className="line-clamp-2 text-xs text-muted-foreground">
-        {item.text.substring(0, 300)}
+        {item.entryAmount} entry
       </div>
       <Badge>{item.date}</Badge>
     </button>

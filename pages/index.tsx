@@ -1,5 +1,11 @@
 import { Inter } from "next/font/google";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,6 +13,7 @@ import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Mail, mails } from "@/data/data";
 import LadderCard from "@/components/native/ListCard";
+import { Separator } from "@/components/ui/separator";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,11 +33,20 @@ export default function Home({ items }: MailListProps) {
   const handlePrevStep = () => {
     setCurrentStep(currentStep - 1);
   };
+  const [selectedLadder, setSelectedLadder] = useState<Mail | null>(null);
+
+  const handleLadderSelect = (mail: Mail) => {
+    setSelectedLadder(mail);
+  };
+
+  const handleBack = () => {
+    setSelectedLadder(null);
+  };
   return (
     <div
       className={`w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-screen  ${inter.className}`}
     >
-      <div className="flex  items-center justify-center py-12">
+      <div className="flex items-center justify-center">
         <div className="mx-auto grid w-full gap-6">
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Ladder Simulator</h1>
@@ -101,20 +117,63 @@ export default function Home({ items }: MailListProps) {
           </Card>
         </div>
       </div>
-      <div className=" flex p-4">
-        <div className="w-full">
-          <CardTitle className="px-2 pb-4">Ladder list</CardTitle>
-          <ScrollArea className="h-screen">
-            <div className="flex flex-col gap-2 p-2 pt-0">
-              {mails.map((item) => (
-                <LadderCard key={item.id} item={item} />
-              ))}
-            </div>
-          </ScrollArea>
+      <div className="w-full">
+        <CardTitle className="px-2 py-4"></CardTitle>
+        <div className="px-2">
+          {selectedLadder ? (
+            // <Card className="h-[90vh] shadow-none">
+            //   <CardTitle>{selectedMail.id}</CardTitle>
+            //   <CardTitle>{selectedMail.name}</CardTitle>
+            //   <CardTitle>{selectedMail.id}</CardTitle>
+            //   <CardTitle>{selectedMail.id}</CardTitle>
+            //   <Button onClick={handleBack}>Back</Button>
+            // </Card>
+            <Card className="w-full max-w-md">
+              <CardHeader>
+                <CardTitle>Calculation Output</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {/* {...Array} */}
+                <div className="grid gap-2">
+                  <div className="flex items-center justify-between">
+                    <div>5 x 2</div>
+                    <div className="font-medium">10</div>
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div>10 x 3</div>
+                    <div className="font-medium">30</div>
+                  </div>
+                  <Separator />
+                  <div className="flex items-center justify-between">
+                    <div>30 x 4</div>
+                    <div className="font-medium">120</div>
+                  </div>
+                </div>
+                <Separator className="my-4" />
+                <div className="flex items-center justify-between">
+                  <div className="text-2xl font-bold">Final Result:</div>
+                  <div className="text-4xl font-bold">120</div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button onClick={handleBack}>Back</Button>
+              </CardFooter>
+            </Card>
+          ) : (
+            <ScrollArea className="h-[90vh]">
+              <div className="flex flex-col gap-2 p-2 pt-0">
+                {mails.map((item) => (
+                  <LadderCard
+                    key={item.id}
+                    item={item}
+                    onSelect={handleLadderSelect}
+                  />
+                ))}
+              </div>
+            </ScrollArea>
+          )}
         </div>
-        {/* <div className="bg-muted flex border items-center justify-center py-12">
-          <CardTitle>Ladder view</CardTitle>
-        </div> */}
       </div>
     </div>
   );
